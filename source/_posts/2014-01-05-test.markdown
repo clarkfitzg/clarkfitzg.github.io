@@ -1,0 +1,9 @@
+---
+layout: post
+title: "test"
+date: 2014-01-05 11:57:56 -0800
+comments: true
+categories: 
+---
+
+Will this publish properly?
