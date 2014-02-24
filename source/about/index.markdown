@@ -11,4 +11,6 @@ My name is Clark Fitzgerald. This blog contains my notes as I learn how to progr
 
 You can find me on Twitter as [@clarkfitzg](https://twitter.com/clarkfitzg) or on [LinkedIn](http://www.linkedin.com/in/clarkf). See some code at [Github](https://github.com/clarkfitzg), same place this blog is hosted.
 
+Programming rocks.
+
 {% img left /images/profile_photo2.JPG 350 350 'image' 'images' %}
