@@ -1,5 +1,8 @@
 # Dependencies
 markdown:         redcarpet
+redcarpet:
+  extensions: ["tables"]
+
 pygments:         true
 
 # Permalinks
@@ -7,21 +10,23 @@ permalink:        pretty
 
 # Setup
 title:            Datalearner
-tagline:          Programming stats in Python and R
-url:              http://clarkfitzg.github.io
-paginate:         1
-#baseurl:          /
+tagline:          'data stuff'
+url:              http://www.clarkfitzg.github.io
+#shorturl:         
+
 author:
-  name:           Clark Fitzgerald
+  name:           'Clark Fitzgerald'
   url:            https://twitter.com/clarkfitzg
-  email:          clarkfitzg@gmail.com
+
+paginate:         1
 
 # Custom vars
 version:          1.0.0
-github:
-  repo:           https://github.com/clarkfitzg/clarkfitzg.github.io
 
-# Include these pages in header
+github:
+  repo:           github.com/clarkfitzg/clarkfitzg.github.io
+
+# This is the list of pages to incldue in the header of the website.
 pages_list:       
-  About: '/about'
-  Archive: '/archive'
+  About: '/about/'
+  Archive: '/archive/'
