@@ -10,7 +10,7 @@ title:            Datalearner
 tagline:          Programming stats in Python and R
 url:              http://clarkfitzg.github.io
 paginate:         1
-baseurl:          /
+#baseurl:          /
 author:
   name:           Clark Fitzgerald
   url:            https://twitter.com/clarkfitzg
@@ -21,6 +21,7 @@ version:          1.0.0
 github:
   repo:           https://github.com/clarkfitzg/clarkfitzg.github.io
 
+# Include these pages in header
 pages_list:       
   About: '/about'
   Archive: '/archive'
