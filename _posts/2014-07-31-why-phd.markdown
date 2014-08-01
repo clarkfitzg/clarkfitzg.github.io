@@ -1,19 +1,21 @@
 ---
 layout: post
 title: why phd
-date: 2014-07-16 11:29
+date: 2014-07-31 11:29
 comments: false
 categories: school, motivation, career
 ---
 
 This fall I will begin studying for a phd in statistics at UC Davis. It will take 5 years. This post explains the motivation behind my decision. 
 
-Michael Lopez recently wrote a relevant post on [Deciding on a grad program in statistics](http://statsbylopez.com/2014/07/19/part-i-deciding-on-a-graduate-program-in-statistics/). He says that students should have clear reasons for going to grad school. I'm doing it because I enoy it, and because the field offers exciting opportunities for those who are highly skilled.
+Michael Lopez recently wrote a relevant post on [Deciding on a grad program in statistics](http://statsbylopez.com/2014/07/19/part-i-deciding-on-a-graduate-program-in-statistics/). He says that students should have clear reasons for going to grad school. I'm going because I enjoy the challenge of statistics, and because the field offers exciting opportunities for those who are highly skilled.
 
-For the last couple years I've worked in business intelligence at Cisco. All day I work with data. I see tremendous opportunity in this field, opportunity to **understand**. Until the data is analyzed, nothing can come of it. 
+For the last couple years I've worked in business intelligence at Cisco. All day I work with data. I see tremendous opportunity in this field, opportunity to **understand**. Until the data is analyzed, nothing can come of it. My lack of knowledge about statistics holds me back from what I really want to do.
 
-Mathematical reasoning can be very subtle, and technical experts are hard to find. Many people receive *just* enough training in statistics to do the analysis they have at hand in their field. But there's nothing like having a strong foundation in the theory.
+This is more than just a nice career for me to settle into. Statistical computing fascinates me deeply. When I come home from work I write code and read statistics for fun. My Dad always told me, *"If you can find a way to get paid for doing something you love then you'll never have to work."* For once I'm taking his advice.
 
 Going back to school full time for 5 years is a big commitment. People realize that it takes many years of school to become a heart surgeon, or a patent attorney. It's no different for becoming a statistician. Indeed, most professional jobs demand many years of training.
 
-Computing fascinates me deeply. The intersection of statistics and computing is an area that will be so useful going forward. Data grows exponentially. Is our intellectual ability to understand this data growing as well?
+Mathematical reasoning can be very subtle, and technical experts are hard to find. Many people receive *just* enough training in statistics to do the analysis they have at hand in their field. My goal is to develop a deep level of expertise that will open doors I never knew existed. Right now I expect to return to the tech industry, most likely as a scientist doing research and development. 
+
+The intersection of statistics and computing is an area that will be so useful going forward. Data grows exponentially, and with it comes a demand for useful analysis. Is our capacity to understand and process this data growing as well?
