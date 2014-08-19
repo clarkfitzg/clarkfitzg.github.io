@@ -1,0 +1,11 @@
+---
+layout: post
+title: scipy.stats for the win
+date: 2014-08-18 23:13
+comments: false
+categories: scipy, study habits
+---
+
+Lately I've been using [scipy.stats](http://docs.scipy.org/doc/scipy/reference/stats.html) as a companion to my statistics textbook. I read the theory and explore with the computation, tying them together in my mind. This is working well, since it lets me quickly and easily verify theoretical claims and visualize as I become more familiar with some very nice technology.
+
+The best part is the random variables. At first they seemed a bit unfamiliar and unwieldy compared to just getting random normal samples say with `numpy.random.randn` or `rnorm` in R. But they contain all kinds of good stuff, like methods for evaluating probability densities, cumulative distributions, probability point functions, and generating actual samples. Those are all common tasks when you want to learn about a distribution. `scipy.stats` just wraps it all up in a neat, consistent API.
