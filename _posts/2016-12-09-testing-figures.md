@@ -8,4 +8,4 @@ categories:
 
 Normal data:
 
-![](img/noise.png)
+![]({{ site.url }}/assets/noise.png)
