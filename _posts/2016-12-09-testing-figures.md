@@ -6,6 +6,14 @@ comments: false
 categories: 
 ---
 
+{% include math.html %}
+
+An equation:
+
+$$
+a^2 + b^2 = c^2
+$$
+
 Normal data:
 
 ![]({{ site.url }}/assets/noise.png)
