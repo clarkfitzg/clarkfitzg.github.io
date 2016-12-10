@@ -23,7 +23,7 @@ categories:
 
 '''.format(title, time.strftime("%Y-%m-%d %H:%M"))
 
-filename = '-'.join([date] + title.split()) + '.markdown'
+filename = '-'.join([date] + title.split()) + '.md'
 
 with open(filename, 'w') as f:
     f.write(top)
