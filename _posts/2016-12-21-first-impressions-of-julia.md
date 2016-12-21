@@ -20,6 +20,7 @@ become less of a problem.
 It also wasn't clear to what extent the language would support
 vectorized operations. In R and Numpy users find it convenient to operate
 on entire vectors and arrays at one time. Julia supports this:
+
 ```
 julia> exp(1:5)  # Equivalent to [exp(x) for x in 1:5]
 5-element Array{Float64,1}:
