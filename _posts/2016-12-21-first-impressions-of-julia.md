@@ -37,8 +37,11 @@ less natural.  Julia claims that the _syntax is familiar to users of other
 technical computing environments_. I found this to be true.  Many of the
 array functions even share the name as the equivalent ones in Numpy, like
 `reshape`.  So I was able to move from R and Python to Julia and be
-immediately productive with a numerical application (approximating log
-likelihoods for high dimensional multivariate normal data).
+immediately productive with a numerical application. The application was
+approximating log likelihoods for high dimensional multivariate normal
+data. The code is [available
+here](https://github.com/clarkfitzg/phd_research/blob/master/analysis/vecchia/Vecchia.jl);
+watch out, it's written by a Julia newb.
 
 If you're thinking about trying Julia, then do it.
 Programming languages don't demand monogamy, and language wars are boring.
