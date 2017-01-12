@@ -84,7 +84,7 @@ Return output to host (CPU):    0.06 sec
 Total:                          0.22 sec
 ```
 
-Evaluating the compute kernel takes around 0.02 seconds. If we fix all
+Evaluating the compute kernel on the GPU takes around __0.02 seconds__. If we fix all
 the inputs except the small $$p$$ vector $$\theta$$ and take the extra step
 of summing the output vector to evaluate the scalar valued likelihood
 function then the data transfer time will be effectively 0 for any
@@ -97,9 +97,10 @@ numerical optimization routines.
 ## Final Thoughts
 
 Most of my programming experience is in high level languages like Python
-and R. This is really my first foray into the low level world of creating
-buffers and directly transferring memory onto devices. I learned a ton, and
-also learned how much I don't know.
+and R. OpenCL goes into the low level world of creating buffers and
+directly transferring memory onto devices. I learned a ton, and feel happy
+about this because these concepts are critical for efficient use of modern
+computational resources. But I have a long way to go!
 
 The [OpenCL Programming
 Guide](https://www.amazon.com/OpenCL-Programming-Guide-Aaftab-Munshi/dp/0321749642)
