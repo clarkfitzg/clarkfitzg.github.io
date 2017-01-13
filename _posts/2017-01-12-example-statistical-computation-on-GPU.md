@@ -3,7 +3,7 @@ layout: post
 title: example statistical computation on GPU
 date: 2017-01-12 10:48
 comments: false
-categories: GPU, math, Julia, C
+categories: GPU math Julia C optimization OpenCL
 ---
 
 {% include math.html %}
