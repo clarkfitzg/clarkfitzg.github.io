@@ -144,8 +144,13 @@ This suggests a common sense way to build confidence when applying
 the software alchemy approach: compare the empirical covariance of the
 $$\hat{\theta}_i$$'s (`$thts`) with the estimated covariance matrix
 $$Var(\tilde{\theta})$$ (`$thtcov`). For this averaging based
-approach one would expect the ratio $$\frac{Var(\hat{\theta}_i)}{Var(\tilde{\theta})}$$ to be 
-roughly in the neighborhood of $$k$$, the number of chunks.
+approach one would expect the ratio 
+
+$$
+\frac{Var(\hat{\theta}_i)}{Var(\tilde{\theta})} \approx k
+$$
+
+where again $$k$$ is the number of chunks.
 
 This was satisfied with iid samples and 2 chunks. These values are "close
 enough" to 2. We can't expect them to be especially close because we're estimating covariance
