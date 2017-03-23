@@ -144,12 +144,12 @@ This suggests a common sense way to build confidence when applying
 the software alchemy approach: compare the empirical covariance of the
 $$\hat{\theta}_i$$'s (`$thts`) with the estimated covariance matrix
 $$Var(\tilde{\theta})$$ (`$thtcov`). For this averaging based
-approach one would expect the ratio $$\frac{Var(\hat{\theta}_i)}{Var(\tilde{\theta})$$ to be 
-roughly in the neighborhood of $k$, the number of chunks.
+approach one would expect the ratio $$\frac{Var(\hat{\theta}_i)}{Var(\tilde{\theta})}$$ to be 
+roughly in the neighborhood of $$k$$, the number of chunks.
 
 This was satisfied with iid samples and 2 chunks. These values are "close
-enough" to 2. They're not especially close because we're estimating covariance
-with only 2 samples, which won't be too acccurate.
+enough" to 2. We can't expect them to be especially close because we're estimating covariance
+with only 2 samples.
 
 ```
 cov(fit_ca$thts) / fit_ca$thtcov
@@ -160,7 +160,7 @@ cov(fit_ca$thts) / fit_ca$thtcov
 ```
 
 Bumping up the number of chunks / workers to 20 increases the accuracy of the
-empirical estimate of $$Var(\theta_i)$$, so the ratio becomes relatively closer to 20.
+empirical estimate of $$Var(\hat{\theta}_i)$$, so the ratio becomes relatively closer to 20.
 Again this gives us confidence.
 
 ```
@@ -186,7 +186,7 @@ cov(fit_sorted$thts) / fit_sorted$thtcov
 # x              499.3145   0.2603325
 ```
 
-These numbers are orders of magnitude away from $k = 2$. This tells us
+These numbers are orders of magnitude away from $$k = 2$$. This tells us
 that the data weren't iid in the chunks or there was some other serious
 issue with the actual versus the expected variance of the estimate
 $$\hat{\theta}$$.
