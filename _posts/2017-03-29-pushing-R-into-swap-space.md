@@ -56,6 +56,10 @@ performance all around than the spinning disk.
 Big thanks to our excellent UC Davis systems administrator Nehad Ismail for
 installing an SSD on one of our servers and configuring the swap.
 
+## bigmatrix
+
+There are
+
 ## Conclusions
 
 Performance in R hits a wall once one starts going to disk, and this is why
