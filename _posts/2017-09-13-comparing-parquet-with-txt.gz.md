@@ -20,12 +20,12 @@ files came in compressed text files (hereafter `txt.gz`) that occupy 24.1
 GB on disk. There were around 300 days, so 300 files, bringing the total
 dimensions up to 26 columns and 2.6 billion rows for the entire data set.
 It's fairly sparse, with maybe 80% of the values missing. But it is a real
-data set found out in the wild, rather than a simulation.  It looks
-something like:
+data set found out in the wild, rather than a simulation.  With spaces for
+readability it looks something like:
 
 ```
-time,station,flow, ...
-10/02/2016 00:00:02,400001,0, ...
+time,                   station,    flow,   occupancy ...
+10/02/2016 00:00:02,    400001,     0,      0.015 ...
 ```
 
 I wanted to do computations in R based on grouping by stations, rather than
@@ -89,14 +89,19 @@ The sizes of the two tables on disk are about the same- 24.1 GB for the
 `txt.gz` and 25.1 GB for the Parquet. The uncompressed `txt` performed much
 worse; it's 261 GB on disk and the same query took 420 seconds. 
 
-In summary, `txt.gz` is marginally smaller and only about 1.5 times slower
-than Parquet.  Uncompressed `txt` is about 10 times larger and 5 times
-slower than Parquet.  Of course this is just one data point, and it doesn't
-show that the formats are equivalent. But it does show that simple
-compressed text _might_ perform close to a more specialized binary format.
-
 ## Final Thoughts
 
+The goal is to have a data format that is both small and fast.
+`txt.gz` is marginally smaller and only about 1.5 times slower
+than Parquet. Uncompressed `txt` is about 10 times larger and 5 times
+slower than Parquet.  Of course this is just one experiment, and it doesn't
+show that the formats are equivalent. Some aspects of this data set 
+certainly influence performance, such as the sparsity pattern and the
+floats which are represented by only a couple ASCII characters.
+
+This result does show that simple
+compressed text _might_ perform close to a more specialized binary format,
+so it shouldn't be dismissed outright.
 So what's going on? Was I wrong to expect better? Am I doing something
 crazy? Seriously, if you have
 an idea then please [let me know](https://twitter.com/clarkfitzg).
@@ -104,7 +109,8 @@ Code can be [found
 here](https://github.com/clarkfitzg/phd_research/tree/master/hadoop).
 
 Parquet has many other things going for it. Storing metadata and column
-type information will save gobs of time munging data. The related [Apache
+type information will save huge amounts of time munging data by removing
+a whole class of bugs. The related [Apache
 Arrow](https://arrow.apache.org/) project looks very promising to create
 low overhead, in memory representations from Parquet. As a young, actively
 developed project, I expect that we'll continue to see Parquet performance
