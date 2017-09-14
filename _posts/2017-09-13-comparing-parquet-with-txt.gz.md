@@ -6,6 +6,13 @@ comments: false
 categories: SQL, R, bigdata, benchmark
 ---
 
+Summary:
+
+Parquet was slightly faster than a compressed CSV file for a simple
+Hive query.
+
+## Background
+
 Caltrans
 Performance Management System [PeMS](http://pems.dot.ca.gov/)
 makes traffic sensor observations publicly available.
@@ -27,6 +34,8 @@ to help with the splitting. This changed the grouping on the files from
 by day to by station, which meant I could happily process each station file
 alone in R. This simple single threaded R script took about 23 hours to run.
 
+## Hive
+
 After some [frustrations with
 Spark](https://github.com/clarkfitzg/phd_research/blob/master/hadoop/notes.md)
 I begin experimenting with [Apache Hive](https://hive.apache.org/) on our
@@ -39,7 +48,7 @@ became simpler SQL with higher level logic. Hive and 4 worker nodes
 brought the 23 hours down to 1.5 hours.
 
 [Apache Parquet](https://parquet.apache.org/), a binary columnar format,
-seemed like it would further reduce the overhead. I saved the data in
+seemed like it would further reduce overhead and help future work. I saved the data in
 Parquet with Snappy compression, [bucketing the
 data](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL+BucketedTables) as follows:
 
@@ -59,7 +68,8 @@ TBLPROPERTIES ("parquet.compression"="SNAPPY")
 
 ## Testing
 
-I tested the speed of Parquet against `txt.gz` files with the following
+I tested the speed of Parquet against the original gz compressed text
+files, (hereafter `txt.gz`) with the following
 simple query:
 
 ```{SQL}
@@ -73,17 +83,19 @@ storage should be a great advantage over the row based storage in `txt.gz`.
 Thus I expected Parquet to be orders of magnitude faster than the `txt.gz`
 files, but this wasn't the case.
 
-This query took 78 seconds with Parquet, and 114 seconds with
-the original gz compressed text. So the `txt.gz` is only about 1.5 times slower
+This query took 78 seconds with Parquet, and 114 seconds with `txt.gz`.
+So the `txt.gz` is only about 1.5 times slower
 than Parquet. The sizes of the two tables on disk are about the same- 24.1
 GB for the `txt.gz` and 25.1 GB for the Parquet (Uncompressed `txt` is 261
 GB). 
+
+## Final Thoughts
 
 So what's going on? Was I wrong to expect better? Am I doing something
 crazy? Seriously, if you have
 an idea then please [let me know](https://twitter.com/clarkfitzg).
 
 Parquet has many other things going for it. Storing metadata and column
-type information will save tons of time munging data. As a young, actively
+type information will save gobs of time munging data. As a young, actively
 developed project, I expect that we'll continue to see performance
 improvements. But I was hoping for more.
