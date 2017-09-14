@@ -13,19 +13,21 @@ Hive query.
 
 ## Background
 
-Caltrans
-Performance Management System [PeMS](http://pems.dot.ca.gov/)
-makes traffic sensor observations publicly available.
-I downloaded
-a subset of their raw data- 300 days worth for one district. The downloaded
-files came in compressed `txt.gz` files that occupy 24.1 GB on disk. There
-were around 300 days, so 300 files, bringing the total dimensions up to 26
-columns and 2.6 billion rows for the entire data set. It looks something
-like:
+Caltrans Performance Management System [PeMS](http://pems.dot.ca.gov/)
+makes traffic sensor observations publicly available.  I downloaded a
+subset of their raw data- 300 days worth for one district. The downloaded
+files came in compressed text files (hereafter `txt.gz`) that occupy 24.1
+GB on disk. There were around 300 days, so 300 files, bringing the total
+dimensions up to 26 columns and 2.6 billion rows for the entire data set.
+It's fairly sparse, with maybe 80% of the values missing. But it is a real
+data set found out in the wild, rather than a simulation.  It looks
+something like:
+
 ```
 time,station,flow, ...
 10/02/2016 00:00:02,400001,0, ...
 ```
+
 I wanted to do computations in R based on grouping by stations, rather than
 by day as the files were currently grouped. Since the files were too large
 to fit in memory I wrote a [basic
@@ -42,9 +44,9 @@ I begin experimenting with [Apache Hive](https://hive.apache.org/) on our
 modest 4 node cluster in the statistics department and
 found that it made the above process smooth and easy. In particular I liked
 the "schema on read" paradigm that let me use the `txt.gz` files in HDFS
-from Hive without any complicated loading. The files just instantly became
-a table. The R code to transform the daily files into the station files
-became simpler SQL with higher level logic. Hive and 4 worker nodes
+from Hive without any complicated loading. The files in HDFS just instantly became
+a table that could be queried. The R code to transform the daily files into the station files
+became simpler SQL with higher level logic. Hive with 4 worker nodes
 brought the 23 hours down to 1.5 hours.
 
 [Apache Parquet](https://parquet.apache.org/), a binary columnar format,
@@ -68,12 +70,11 @@ TBLPROPERTIES ("parquet.compression"="SNAPPY")
 
 ## Testing
 
-I tested the speed of Parquet against the original gz compressed text
-files, (hereafter `txt.gz`) with the following
+I tested the speed of Parquet against `txt.gz` with the following
 simple query:
 
 ```{SQL}
-SELECT station, MAX(flow1) FROM pems
+SELECT station, MAX(flow) FROM pems
 GROUP BY station;
 ```
 
@@ -84,18 +85,27 @@ Thus I expected Parquet to be orders of magnitude faster than the `txt.gz`
 files, but this wasn't the case.
 
 This query took 78 seconds with Parquet, and 114 seconds with `txt.gz`.
-So the `txt.gz` is only about 1.5 times slower
-than Parquet. The sizes of the two tables on disk are about the same- 24.1
-GB for the `txt.gz` and 25.1 GB for the Parquet (Uncompressed `txt` is 261
-GB). 
+The sizes of the two tables on disk are about the same- 24.1 GB for the
+`txt.gz` and 25.1 GB for the Parquet. The uncompressed `txt` performed much
+worse; it's 261 GB on disk and the same query took 420 seconds. 
+
+In summary, `txt.gz` is marginally smaller and only about 1.5 times slower
+than Parquet.  Uncompressed `txt` is about 10 times larger and 5 times
+slower than Parquet.  Of course this is just one data point, and it doesn't
+show that the formats are equivalent. But it does show that simple
+compressed text _might_ perform close to a more specialized binary format.
 
 ## Final Thoughts
 
 So what's going on? Was I wrong to expect better? Am I doing something
 crazy? Seriously, if you have
 an idea then please [let me know](https://twitter.com/clarkfitzg).
+Code can be [found
+here](https://github.com/clarkfitzg/phd_research/tree/master/hadoop).
 
 Parquet has many other things going for it. Storing metadata and column
-type information will save gobs of time munging data. As a young, actively
-developed project, I expect that we'll continue to see performance
+type information will save gobs of time munging data. The related [Apache
+Arrow](https://arrow.apache.org/) project looks very promising to create
+low overhead, in memory representations from Parquet. As a young, actively
+developed project, I expect that we'll continue to see Parquet performance
 improvements. But I was hoping for more.
