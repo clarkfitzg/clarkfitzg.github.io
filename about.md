@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I'm a PhD candidate in Statistics at UC Davis in California. I like programming.
+I'm a PhD candidate in Statistics at UC Davis in California. I like programming and data.
 You can usually find me sitting in the UC Davis [Data Science
 Initiative](http://dsi.ucdavis.edu/).
 
