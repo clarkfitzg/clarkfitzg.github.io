@@ -9,11 +9,27 @@ categories: hive, hadoop, R
 This post shows a simple, minimal example of using R with
 [Apache Hive](https://hive.apache.org/) data warehouse.
 
+The internet
+has a few examples of how to [apply UDAF's with
+Python](http://www.florianwilhelm.info/2016/10/python_udf_in_hive/), and
+this inspired me to try the same thing with R. R works well for this
+because a data frame is basically the same thing as a table.
+
 Hive supports user defined aggregation functions (UDAF's) through custom programs
 that process [`stdin` and
-`stdout`](https://en.wikipedia.org/wiki/Standard_streams). The internet
-has a few examples of how to [apply UDAF's with
-Python](http://www.florianwilhelm.info/2016/10/python_udf_in_hive/).
+`stdout`](https://en.wikipedia.org/wiki/Standard_streams).
+Hive sends each row of a table to the program via `stdin`. The program may
+process stream any way it wants. Then the program writes 
+lines representing rows to `stdout`. Hive puts those lines together as a
+table in the database. The model is flexible, so the program can write as many or as
+few rows as it wants.
+
+The `CLUSTER BY` part of the SQL means that output will be sorted based on
+the value of a column. This means each unique value of that column will be
+processed by just one R script, so we can process the entire group at a
+time. Processing large groups, ie. 1000's of rows at one time lets us write
+more efficient R code versus processing one row at a time. I plan to
+explain this idea further in a follow up post.
 
 To run the code in this post, load up the `u_data` table of movie rankings following
 the [Hive
@@ -30,7 +46,7 @@ GROUP BY userid
 ;
 ```
 
-It's nice to first do something that SQL can do, because then we can verify
+It's nice to first try something that SQL can do, because then we can verify
 the answer. Of course the whole point of using R or any other program is to
 go beyond what SQL can do.
 
