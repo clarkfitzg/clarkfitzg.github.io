@@ -6,12 +6,14 @@ comments: false
 categories: hive, hadoop, R
 ---
 
+This post shows a simple, minimal example of using R with
+[Apache Hive](https://hive.apache.org/) data warehouse.
+
 Hive supports user defined aggregation functions (UDAF's) through custom programs
 that process [`stdin` and
 `stdout`](https://en.wikipedia.org/wiki/Standard_streams). The internet
 has a few examples of how to [apply UDAF's with
-Python](http://www.florianwilhelm.info/2016/10/python_udf_in_hive/).  This
-post shows how to do it with the R language.
+Python](http://www.florianwilhelm.info/2016/10/python_udf_in_hive/).
 
 To run the code in this post, load up the `u_data` table of movie rankings following
 the [Hive
@@ -22,12 +24,10 @@ documentation](https://cwiki.apache.org/confluence/display/Hive/GettingStarted#G
 I'm going to do the SQL equivalent of: 
 
 ```
-
 SELECT userid, COUNT(*) as n
 FROM u_data
 GROUP BY userid
 ;
-
 ```
 
 It's nice to first do something that SQL can do, because then we can verify
@@ -80,7 +80,7 @@ $ cat little.txt | Rscript udaf.R
 ```
 
 If you see the table you expected printed to `stdout` then it worked. Be
-happy. Then you can run the `udaf.sql` script, comparing the results to the
+happy. You can now run the `udaf.sql` script, comparing the results to the
 initial query:
 
 ```{sql}
