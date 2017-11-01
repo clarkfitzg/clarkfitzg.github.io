@@ -6,8 +6,13 @@ comments: false
 categories: hive, hadoop, R
 ---
 
-This post shows a simple, minimal example of using R with
+### Summary
+
+This post shows a simple, minimal example of using the
+[R language](https://www.r-project.org/) with
 [Apache Hive](https://hive.apache.org/) data warehouse.
+
+### Introduction
 
 Hive supports user defined aggregation functions (UDAF's) through custom programs
 that process [`stdin` and
@@ -23,8 +28,9 @@ The `CLUSTER BY` part of the SQL below means that the stream Hive sends to
 each unique value of that column will be processed by just one R script, so
 we can process the entire group at a time. Processing large groups, ie.
 1000's of rows at one time lets us write more efficient R code versus
-processing one row at a time. I plan to explain this idea further in a
-follow up post.
+processing one row at a time. A 
+[follow up post]({{ site.baseurl }}{% post_url
+2017-10-31-3-billion-rows-with-R %}) explains this idea further.
 
 To run the code in this post, load up the `u_data` table of movie rankings following
 the [Hive
@@ -75,9 +81,9 @@ write.table(ans, stdout(), sep = "\t"
 This script loads everything from `stdin` straight into memory. It does not
 stream. __This approach will fail for large enough data.__ It fails
 because each individual R process may not be able to hold the subsets in
-memory. Maybe in a follow on post I'll show how to [do this in a scalable
-and efficient way](https://github.com/clarkfitzg/phd_research/blob/master/analysis/pems/hadoop/piecewise_fd.R)
-using streams in R.
+memory. Please see the [follow up post]({{ site.baseurl }}{% post_url
+2017-10-31-3-billion-rows-with-R %}) to see how to do this properly using
+streams in R.
 
 ## Development
 
