@@ -78,7 +78,7 @@ cat data/* | Rscript piecewise_fd.R > results.tsv
 ```
 
 Then be patient.
-This assumes that the data be begins initially grouped by some column, and
+This assumes that the data begins initially grouped by some column, and
 processing the largest group doesn't exceed available memory. Some
 techniques can work around these assumptions, but I won't mention them
 here.
@@ -120,11 +120,10 @@ process_group = function(grp, outfile)
 
 # Main stream processing
 ############################################################
-# The variable queue below is a FIFO that changes dimensions
-# as it reads data and processes groups 
+# The variable queue below is a data frame acting as a FIFO that 
+# changes dimensions as it reads data and processes groups 
 
-# NOT stdin()
-stream_in = file("stdin")
+stream_in = file("stdin")  # NOT stdin()
 open(stream_in)
 stream_out = stdout()
 
@@ -181,6 +180,6 @@ analysis function as a native Hive UDF to process the groups with a `GROUP
 BY` is also possible, but using a fast, robust implementation in an R
 package is easier.
 
-Another advantage is that no installation or configuration is required. If
-you have data in Hive and R installed on the cluster then you can use this
-technique today.
+Another advantage of this approach is that it requires minimal installation
+/ configuration. If you have data in Hive and R installed on the cluster
+then you can use this technique today.
