@@ -12,6 +12,9 @@ Combining [Apache Hive](https://hive.apache.org/) with the
 [R language](https://www.r-project.org/) reduced the run time of a practical
 data analysis script from a couple days to 12 minutes.
 
+[Here's the
+code.](https://github.com/clarkfitzg/phd_research/tree/master/analysis/pems/hadoop)
+
 ### Introduction
 
 Researchers have worked with R and Hadoop for many years, i.e.  through
