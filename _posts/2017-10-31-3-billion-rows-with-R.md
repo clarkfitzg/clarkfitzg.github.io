@@ -14,7 +14,7 @@ data analysis script from a couple days to 12 minutes.
 
 ### Introduction
 
-Researchers have worked R and Hadoop for many years, i.e.  through
+Researchers have worked with R and Hadoop for many years, i.e.  through
 [Hadoop's streaming
 interface](https://www.r-bloggers.com/integrating-r-with-apache-hadoop/) or
 [RHIPE and deltarho](http://deltarho.org/). The approach with Hive
@@ -30,11 +30,11 @@ calculation. Each group fits easily in worker memory, so each Hive worker
 can apply an R script to the data, one group at a time. This technique
 plays off the strengths of each system.  Hive handles storage, column
 selection, basic filtering, sorting, fault tolerance, and parallelism. R
-lets us express arbitrary analytic operations as R functions.
+lets us express arbitrary analytic operations through R functions.
 
 ### SQL
 
-This SQL query applies the transformation:
+This Hive SQL query applies the transformation:
 
 ```{sql}
 INSERT OVERWRITE TABLE fundamental_diagram
@@ -55,7 +55,7 @@ FROM (
 ;
 ```
 
-This SQL does the following:
+Hive does the following:
 1. Selects three columns from the table `pems`. Selecting just the
    necessary columns for the transform reduces overhead.
 2. Groups the selected columns so that the unique values of the `station`
@@ -77,16 +77,18 @@ processing arbitrary amounts of plain text data. For example, if you have
 cat data/* | Rscript piecewise_fd.R > results.tsv
 ```
 
-Assume that the data be begins initially grouped by some column, and
+Then be patient.
+This assumes that the data be begins initially grouped by some column, and
 processing the largest group doesn't exceed available memory. Some
 techniques can work around these assumptions, but I won't mention them
 here.
 
+Here is `piecewise_fd.R`:
+
 ```{R}
+CHUNKSIZE = 1e6L
 # Should be larger than the max chunk size that one
 # would like to process in memory.
-CHUNKSIZE = 1e6L
-
 # I checked ahead of time that the largest working chunk is
 # around 800K rows.
 # So make it larger than 800K.
@@ -118,13 +120,15 @@ process_group = function(grp, outfile)
 
 # Main stream processing
 ############################################################
+# The variable queue below is a FIFO that changes dimensions
+# as it reads data and processes groups 
 
 # NOT stdin()
 stream_in = file("stdin")
 open(stream_in)
 stream_out = stdout()
 
-# Initialize the queue, a group of rows waiting to be processed
+# Initialize the queue, a group of rows waiting to be processed.
 queue = read.table(stream_in, nrows = CHUNKSIZE, colClasses = colClasses
     , col.names = col.names, na.strings = "\\N")
 
