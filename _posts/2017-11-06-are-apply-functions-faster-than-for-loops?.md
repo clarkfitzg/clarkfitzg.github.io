@@ -9,6 +9,11 @@ categories: R, performance
 Are apply style function in R, say `sapply()` any faster than `for` loops
 in R? We can gain some insight using the `microbenchmark` package.
 
+If this question worries you, then just relax. If you have code that you
+would like to make faster, then the only thing to do is profile it. Hacking
+code up for performance before you need it is premature optimization, the
+root of all evil ;)
+
 ## Rules of thumb
 
 Write vectorized R code when possible, ie. `y <- f(x)`. This 
@@ -77,15 +82,15 @@ The vectorized and `sapply()` versions take only 1 line, while the
 
 The `sapply()` was faster than the `for()` loop, but how much faster
 depends on the values of `n`.
-
 For `n = 100` the `sapply()` is 15 times slower than the vectorized
 version, and the `for()` is 23 times slower than the `sapply()`!
 
 For `n = 10000` the `sapply()` is 19 times slower than the vectorized
 version, and the `for()` is 1.16 times slower than the `sapply()`.
-In other words, as the number of elements grows much past 1000 we see less
+
+As the number of elements grows much past 1000 we see less
 speed benefits from choosing `sapply()` over `for()`. Choose `sapply()` for
 other reasons.
 
-Main Conclusion: Both `sapply()` and `for()` loops are much slower than
-vectorized code. 
+__Main Point__: Both `sapply()` and `for()` loops are much slower than
+vectorized code.
