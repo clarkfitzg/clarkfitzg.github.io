@@ -8,7 +8,7 @@ categories: Hive, R, Hadoop, groupby, mapreduce, parallel, bigdata
 
 ### Summary
 
-Combining [Apache Hive](https://hive.apache.org/) with the 
+Combining [Apache Hive](https://Hive.apache.org/) with the 
 [R language](https://www.r-project.org/) reduced the run time of a practical
 data analysis script from a couple days to 12 minutes.
 
@@ -24,8 +24,19 @@ interface](https://www.r-bloggers.com/integrating-r-with-apache-hadoop/) or
 described here complements these efforts, while staying mostly higher
 level.
 
+Hive tables are also [accessible from R through
+JDBC](http://jarrettmeyer.com/2016/11/03/Hive-and-r-playing-nicely-together).
+One can use JDBC to load data from Hive directly into a local R session.
+This approach is excellent for interactive and exploratory data analysis
+with manageable data sets.  However, it won't work for processing a large
+amount of data in Hive through R, because it brings the data to the code.
+The network and the single local R session are a bottleneck.  For large
+data sets it's much better to bring the code to the data, which is the
+topic of this post.  We'll see how to run R _inside_ Hive, thus fully
+utilizing the power of the cluster.
+
 [Yesterday's post]({{ site.baseurl }}{% post_url
-2017-10-30-hive-udaf-with-R %}) showed some of the basics of using Hive
+2017-10-30-Hive-udaf-with-R %}) showed some of the basics of using Hive
 with R, along with debugging.  This post shows a more realistic use case
 processing 3 billion rows of traffic sensor data.
 Hive does the column selection and the group by; R performs the
