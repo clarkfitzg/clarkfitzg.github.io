@@ -30,7 +30,7 @@ with, for use by the engineering team. This example highlights a second
 skill, the ability to quickly pick up and use new technologies.
 
 They are familiar with and sufficiently skeptical of statistical and
-machine learning techniques. For example, when analyzing a time series data
+machine learning techniques. For example, when analyzing a time series
 they can understand the assumptions and model of ARIMA. They're not
 necessarily experts in time series, but they know where to look and can
 grasp the key ideas well enough to quickly produce valid results.
