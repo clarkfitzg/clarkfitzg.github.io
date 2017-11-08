@@ -36,7 +36,7 @@ topic of this post.  We'll see how to run R _inside_ Hive, thus fully
 utilizing the power of the cluster.
 
 [Yesterday's post]({{ site.baseurl }}{% post_url
-2017-10-30-Hive-udaf-with-R %}) showed some of the basics of using Hive
+2017-10-30-hive-udaf-with-R %}) showed some of the basics of using Hive
 with R, along with debugging.  This post shows a more realistic use case
 processing 3 billion rows of traffic sensor data.
 Hive does the column selection and the group by; R performs the
