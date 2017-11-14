@@ -13,6 +13,8 @@ Initiative](http://dsi.ucdavis.edu/).
 - linkedin [@clarkfitzg](https://www.linkedin.com/in/clarkfitzg/)
 - github [@clarkfitzg](https://github.com/clarkfitzg)
 
+![profile]({{ site.url }}/assets/profile.jpg)
+
 This material is based upon work supported by the National Science
 Foundation Graduate Research Fellowship under Grant No. 1650042.
 Any opinion, findings, and conclusions or recommendations expressed in
