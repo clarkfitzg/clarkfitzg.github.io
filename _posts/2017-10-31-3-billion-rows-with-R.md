@@ -24,6 +24,14 @@ interface](https://www.r-bloggers.com/integrating-r-with-apache-hadoop/) or
 described here complements these efforts, while staying mostly higher
 level.
 
+__EDIT 27 Nov 17__ Today I stumbled across the [RHive
+package](https://github.com/nexr/RHive) which was
+[archived on CRAN](https://cran.r-project.org/src/contrib/Archive/RHive/).
+I've briefly looked at the code, and the approach seems similar to what I
+describe here. It works more interactively, running queries from within an
+R session and passing data to R workers via `rJava` rather than processing
+`stdin`.
+
 Hive tables are also [accessible from R through
 JDBC](http://jarrettmeyer.com/2016/11/03/Hive-and-r-playing-nicely-together).
 One can use JDBC to load data from Hive directly into a local R session.
