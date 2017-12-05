@@ -65,7 +65,7 @@ end
 ```
 
 This runs in about 2ms, making it 25x faster than R's vectorized version
-and 2500x faster than an R `for loop`. I find Julia's two `for` loops:
+and 2500x faster than an R `for` loop. I find Julia's two `for` loops:
 
 ```{julia}
 for col in 1:n 
@@ -83,7 +83,9 @@ Y[] <- d * X * rep(d, each = n)
 
 It's more clear because I can recognize the correspondence to the formula
 more quickly in the Julia version. I value clarity more than speed in most
-cases. Here Julia provides both.
+cases. Here Julia provides both. One disadvantage is that I needed to know
+Julia is column major in order to write the `for` loops in a cache friendly
+way.
 
 Thanks to Professor Anderes and the R code review group at the DSI for
 showing interest in this.
