@@ -90,8 +90,9 @@ way.
 ## Dreams
 
 What I really want now is a way to compile Julia code into a shared object
-to load into an R session, just like we can do with C/C++ code. Then we
-could call this Julia function directly from R. This differs from John
+to load into an R session, just like we can do with C/C++ code. This is
+nice because Julia code is relatively easier to develop compared to C. Then
+we could call this Julia function directly from R. This differs from John
 Chambers' approach in [XRJulia](https://cran.r-project.org/package=XRJulia)
 package which uses proxy objects.
 
