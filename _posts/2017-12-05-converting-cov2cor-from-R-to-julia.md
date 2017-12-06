@@ -87,5 +87,13 @@ cases. Here Julia provides both. One disadvantage is that I needed to know
 Julia is column major in order to write the `for` loops in a cache friendly
 way.
 
+## Dreams
+
+What I really want now is a way to compile Julia code into a shared object
+to load into an R session, just like we can do with C/C++ code. Then we
+could call this Julia function directly from R. This differs from John
+Chambers' approach in [XRJulia](https://cran.r-project.org/package=XRJulia)
+package which uses proxy objects.
+
 Thanks to Professor Anderes and the R code review group at the DSI for
 showing interest in this.
