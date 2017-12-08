@@ -44,4 +44,5 @@ suffers by a factor of 150 times. Ouch.
 microbenchmark(out3 <- do.call(c, unname(l)), times = 10L)
 ```
 
-This version is again fast, around 4 ms. Sometimes names hurt!
+This version is again fast, around 4 ms. I'm surprised `names` can have
+such a large performance impact.
