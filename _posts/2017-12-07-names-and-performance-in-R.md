@@ -46,3 +46,6 @@ microbenchmark(out3 <- do.call(c, unname(l)), times = 10L)
 
 This version is again fast, around 4 ms. I'm surprised `names` can have
 such a large performance impact.
+
+UPDATE: Henrik Bengtsson suggested the more idiomatic `unlist(x, use.names = FALSE)`.
+This is fast and easier to read. Thanks Henrik!
