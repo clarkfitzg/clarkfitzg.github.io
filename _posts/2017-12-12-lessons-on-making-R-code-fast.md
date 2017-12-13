@@ -17,6 +17,8 @@ Profile first, and then optimize the slow parts. After using R for several
 years I can spot glaring errors, but beyond that my intuition is usually
 wrong.
 
+Learn to debug really well.
+
 Check if someone has already written fast code that does what you want.
 
 The speed of popular packages varies widely. For example,
