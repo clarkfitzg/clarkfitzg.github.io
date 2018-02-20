@@ -21,3 +21,8 @@ once they become large, causing the operation to fail.
 We can make something like a view in R by creating two intermediate vectors
 to represent the join. The intermediate vectors of indices describe which
 rows to bring from each table to make a join.
+
+This is somewhat like a sparse matrix, since it allows us to represent a
+larger data structure in an implicit form.
+
+TODO: show implementation by writing `[.join.data.frame` method.
