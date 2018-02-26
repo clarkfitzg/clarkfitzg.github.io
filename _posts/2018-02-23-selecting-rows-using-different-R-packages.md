@@ -13,14 +13,14 @@ There are three popular ways to manipulate and analyze data frames in R:
 - [dplyr](http://dplyr.tidyverse.org/)
 
 These packages are not mutually exclusive, ie one might mix two of them. We
-can refer to them as DSL's because they all offer distinct syntax
+can refer to them as domain specific languages (DSL)'s because they all offer distinct syntax
 to perform operations that resemble SQL type queries on tables. They go
 beyond SQL since they support general R functions. 
 
 I'm interested in these DSL's for the purpose of code analysis and code
 transformations, for example creating parallel code from serial. To analyze the
 code we need to precisely understand the semantics when each function uses
-[Nonstandard
+[nonstandard
 evaluation](http://adv-r.had.co.nz/Computing-on-the-language.html) (NSE).
 
 This post shows all the different common ways to do a basic row selection
@@ -68,6 +68,9 @@ f11 = flights_df[condition, ]
 
 # NSE includes column names in scope
 f11 = subset(flights_df, month == 1 & day == 1)
+
+f11 = subset(flights_df, cond)
+
 ```
 
 
@@ -85,24 +88,14 @@ f11 = flights_dt[condition, ]
 
 # NSE includes column names in scope
 f11 = flights_dt[month == 1 & day == 1, ]
-
-f11 = flights_dt[month == 1 & day == 1, ]
 ```
-
-I'm not aware of any way to pass in the string `"month"` stored in the
-variable `month_var` to build this query directly without quite a bit of
-nonstandard evaluation.
 
 ## dplyr
 
-dplyr provides the largest number of ways to construct this query.
-Besides dplyr we also have the [rlang
-package](https://cran.r-project.org/package=rlang) with the whole approach of
-[tidy evaluation](http://dplyr.tidyverse.org/articles/programming.html).
+dplyr provides the largest number of ways to construct this query.  
 
 ```{R}
 library(dplyr)
-library(rlang)
 flights_tbl = flights
 
 # standard evaluation
@@ -116,6 +109,29 @@ f11 = filter(flights_tbl, month == 1, day == 1)
 
 # NSE explicitly scoping inside flights_tbl
 f11 = filter(flights_tbl, .data$month == 1, .data$day == 1)
+```
+
+## Computing on the language
+
+It is possible to directly construct the code that uses NSE given the
+variable names by manipulating the language objects. This seems like a
+complicated, indirect way of accomplishing the desired goal. Here it is for
+those who are curious:
+
+```{R}
+call = substitute(flights_dt[col1 == 1 & col2 == 1, ]
+    , list(col1 = as.symbol(month_var), col2 = as.symbol(day_var)))
+
+f11 = eval(call)    # When eval() appears, think DANGER!
+```
+
+The [rlang package](https://cran.r-project.org/package=rlang) brings in the
+whole approach of [tidy
+evaluation](http://dplyr.tidyverse.org/articles/programming.html).
+
+
+```{R}
+library(rlang)
 
 # tidyeval framework with quoting
 # https://stackoverflow.com/questions/24569154/use-variable-names-in-functions-of-dplyr
@@ -131,9 +147,11 @@ f11 = filter(flights_tbl, (!!month_quo) == 1, (!!day_quo) == 1)
 
 ## Thoughts
 
-The flexibility of dplyr may benefit users, but it complicates the
-code analysis. It requires understanding the semantics of a larger system
-if we want to handle all the ways users can program.
+The basic queries using NSE to refer to column names in a data frame are
+the easiest to analyze, because all the logic lives in just one call. 
+Assuming we know these are column names.
+If we compute the logical subset condition ahead of time then we need to
+look around other parts of the code to see how a variable was defined.
 
 On a broader note, if we restrict ourselves to the class of operations on
 tables that all three of these approaches to well and easily then it may be
