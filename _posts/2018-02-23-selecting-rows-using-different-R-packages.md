@@ -114,7 +114,7 @@ f11 = filter(flights_tbl, .data$month == 1, .data$day == 1)
 ## Computing on the language
 
 It is possible to directly construct the code that uses NSE given the
-variable names by manipulating the language objects. This seems like a
+variable names by manipulating language objects. This seems like a
 complicated, indirect way of accomplishing the desired goal. Here it is for
 those who are curious:
 
@@ -125,9 +125,10 @@ call = substitute(flights_dt[col1 == 1 & col2 == 1, ]
 f11 = eval(call)    # When eval() appears, think DANGER!
 ```
 
-The [rlang package](https://cran.r-project.org/package=rlang) brings in the
-whole approach of [tidy
-evaluation](http://dplyr.tidyverse.org/articles/programming.html).
+The [rlang package](https://cran.r-project.org/package=rlang) brings in a
+whole framework of [tidy
+evaluation](http://dplyr.tidyverse.org/articles/programming.html). I don't
+have enough experience with it to comment on how well it works.
 
 
 ```{R}
@@ -147,11 +148,16 @@ f11 = filter(flights_tbl, (!!month_quo) == 1, (!!day_quo) == 1)
 
 ## Thoughts
 
+
 The basic queries using NSE to refer to column names in a data frame are
 the easiest to analyze, because all the logic lives in just one call. 
 Assuming we know these are column names.
 If we compute the logical subset condition ahead of time then we need to
 look around other parts of the code to see how a variable was defined.
+
+In general data.table's approach is to use special symbols, while dplyr
+uses special functions. I'm not sure if one has an advantage for code
+analysis.
 
 On a broader note, if we restrict ourselves to the class of operations on
 tables that all three of these approaches to well and easily then it may be
