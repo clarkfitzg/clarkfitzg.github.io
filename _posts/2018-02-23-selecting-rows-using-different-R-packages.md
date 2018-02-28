@@ -70,7 +70,6 @@ f11 = flights_df[condition, ]
 f11 = subset(flights_df, month == 1 & day == 1)
 
 f11 = subset(flights_df, cond)
-
 ```
 
 
@@ -151,7 +150,8 @@ f11 = filter(flights_tbl, (!!month_quo) == 1, (!!day_quo) == 1)
 
 The basic queries using NSE to refer to column names in a data frame are
 the easiest to analyze, because all the logic lives in just one call. 
-Assuming we know these are column names.
+So we need to know that the assumption that they are column names is
+correct. It's possible to check this.
 If we compute the logical subset condition ahead of time then we need to
 look around other parts of the code to see how a variable was defined.
 
@@ -160,18 +160,21 @@ uses special functions. I'm not sure if one has an advantage for code
 analysis.
 
 On a broader note, if we restrict ourselves to the class of operations on
-tables that all three of these approaches to well and easily then it may be
+tables that all three of these approaches do well and easily then it may be
 possible to convert them to and from a common intermediate representation
 that captures the desired semantics. With the right representation we might
 be able to even go beyond the R language into say [Python
 pandas](https://pandas.pydata.org/) and SQL. dplyr already does this in
-some sense by generating SQL directly.
+some sense by generating SQL directly. I explore this a bit more in a
+follow on post: [representing semantics for data analysis code]({{
+site.baseurl }}{% post_url
+2018-02-27-representing-semantics-for-data-analysis-code %}).
+
 
 I think I need to understand more of the theory of databases to know if
 this is feasible or not. Maybe
 [rquery](https://winvector.github.io/rquery/) offers some path forward in
 building abstract queries from R that we can optimize.
-
 
 
 
