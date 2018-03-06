@@ -112,7 +112,6 @@ look something like this:
                     "output_type": "INT",
                     "properties": ["scalar_to_scalar"]
                 },
-
 ```
 
 Then any DSL or data analysis API like data.table, dplyr, pandas, or SQL
@@ -157,16 +156,18 @@ cares what the underlying technology is, as long as it's fast and correct.
 
 ## Summary
 
-The main use case I am considering for this is starting with naive code
-such as the following:
+Consider this use case. Start with naive code such as the following:
+
 ```
 subset(flights, month == 1 & day == 1)
 ```
 The system converts it to the query specification based on static analysis.
 Then the system uses the data specification to "compile" the query
-specification into some reasonably efficient code to execute. I haven't
-mentioned how to store the query results, but this may well resemble the
-data specification.
+specification into some reasonably efficient code to execute. This saves
+the user from having to tailor their code to a particular system or
+interface, because all the necessary semantics are right there in the
+code.  I haven't mentioned how to store the query results, but this may
+well resemble the data specification.
 
 I haven't thought too much about how the specification should look, but I did
 want to throw something out there to start a conversation.  This sort of
