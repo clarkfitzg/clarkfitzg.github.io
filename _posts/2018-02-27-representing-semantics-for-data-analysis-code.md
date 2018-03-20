@@ -10,6 +10,10 @@ This is a follow up post to [selecting rows using different R packages]({{
 site.baseurl }}{% post_url
 2018-02-23-selecting-rows-using-different-R-packages %}).
 
+EDIT: Since posting this I've learned about [Apache
+Calcite](https://calcite.apache.org/) which is the closest thing I've seen
+to what I describe here.
+
 When analyzing data I often want to do operations that are simple in R or
 Python. If the data doesn't fit into memory I write a bunch of [specialized
 code]({{ site.baseurl }}{% post_url 2017-10-31-3-billion-rows-with-R %}) to
@@ -166,7 +170,7 @@ Then the system uses the data specification to "compile" the query
 specification into some reasonably efficient code to execute. This saves
 the user from having to tailor their code to a particular system or
 interface, because all the necessary semantics are right there in the
-code.  I haven't mentioned how to store the query results, but this may
+code. I haven't mentioned how to store the query results, but this may
 well resemble the data specification.
 
 I haven't thought too much about how the specification should look, but I did
