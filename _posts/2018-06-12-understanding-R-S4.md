@@ -13,14 +13,15 @@ understood long ago. He argues for using S4 over S3 for more general software
 engineering in R.
 
 S4 is necessarily more complex than S3. This post is for me to gather my
-thoughts and see if I understand it.
+thoughts and see if I understand it. There are copious amounts of
+documentation out there.
 
 ## Exploring the space
 
 Typically in R I use `ls()` to see which objects exist. The methods
 package has better tools for this.
 
-Show existing classes:
+What classes does a package define?
 
 ```{r}
 # Any package using S4
@@ -33,42 +34,62 @@ getClasses(pkg)
 # [5] "ScriptNode"
 ```
 
-Inspect class definition, ie. the slots:
+What is the definition of the class, ie. the slots and the inheritance?
 
 ```{r}
-getClass("ScriptNodeInfo")
+getClass("AnnotatedScript")
 
-# Class "ScriptNodeInfo" [package "CodeDepends"]
+# Class "AnnotatedScript" [package "CodeDepends"]
 # 
 # Slots:
 # 
-# Name:        files     strings   libraries      inputs     outputs
-# updates
-# Class:   character   character   character   character   character
-# character
+# Name:      .Data  location
+# Class:      list character
 # 
-# Name:    functions     removes  nsevalVars sideEffects        code
-# Class:     logical   character   character   character         ANY
-
+# Extends:
+# Class "Script", directly
+# Class "list", by class "Script", distance 2
+# Class "vector", by class "Script", distance 3
 ```
 
-Show existing generic functions:
+What generic functions does the package use or define?
 
 ```{r}
-getGenerics()
+getGenerics(pkg)
 
-An object of class "ObjectsWithPackage":
-
-Object:  "^"    "<"    "<="   "=="   ">"    ">="   "|"    "-"    "!="   
-Package: "base" "base" "base" "base" "base" "base" "base" "base" "base"
+# An object of class "ObjectsWithPackage":
+# 
+# Object:  "[<-"  "["    "[[<-" "[["   "$<-"  "$"    "coerce"
+# "getDependsThread"
+# Package: "base" "base" "base" "base" "base" "base" "methods" "CodeDepends"
+# 
+# Object:  "getInputs"   "getVariables" "makeCallGraph" "names" "readScript"
+# Package: "CodeDepends" "CodeDepends"  "CodeDepends"   "base"  "CodeDepends"
 ```
 
-See what 
-
+What methods have been defined for a particular generic function?
 
 ```{r}
+methods(getInputs)
 
+# [1] getInputs,ANY-method            getInputs,DynScript-method
+# [3] getInputs,function-method       getInputs,Script-method
+# [5] getInputs,ScriptNodeInfo-method getInputs,ScriptNode-method
+```
 
+What is the definition of a particular method?
+
+```{r}
+# Definition when calling getInputs(obj) where `obj` is of class function:
+
+getMethod(getInputs, "function")
+
+# Method Definition:
+# 
+# function (e, collector = inputCollector(), basedir = ".", reset = FALSE,
+#     formulaInputs = FALSE, ...)
+# {
+# ...
 ```
 
 
@@ -77,12 +98,14 @@ See what
 Define new classes (usually done in a package):
 
 ```{r}
+
 Schedule = setClass("Schedule",
     slots = c(code = "expression", evaluation = "data.frame"))
 
 TaskSchedule = setClass("TaskSchedule",
     slots = c(transfer = "data.frame"),
     contains = "Schedule")
+
 ```
 
 Now they show up here:
@@ -103,17 +126,25 @@ setGeneric("generateCode", function(Schedule, ...)
 ```
 
 
-
 ## Lazy evaluation
 
 The methods dispatch on the class of the arguments, which requires
-evaluating the arguments. Thus lazy evaluation should not be possible for
+evaluating the arguments. Thus lazy evaluation is not possible for
 these arguments.
 
 ```{r}
+wont_eval = function(x, ...) NULL
+wont_eval(stop())
 
-stand
+# NULL
 
+setGeneric("will_eval", function(x, ...) NULL)
+
+will_eval(rnorm(1))
+
+# NULL
+
+will_eval(stop('first arg here'))
+
+# Error in will_eval(stop("first arg here")) : first arg here
 ```
-
-
