@@ -207,3 +207,8 @@ package is easier.
 Another advantage of this approach is that it requires minimal installation
 / configuration. If you have data in Hive and R installed on the cluster
 then you can use this technique today.
+
+Update: The data came from [Caltrans PeMS](http://pems.dot.ca.gov/) in the
+section Data Clearinghouse with Type "Station Raw". If you just want to
+look at some samples there are some at my [UC Davis
+site](http://anson.ucdavis.edu/~clarkf/).
