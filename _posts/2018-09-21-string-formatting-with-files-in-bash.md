@@ -11,32 +11,32 @@ categories: bash, strings, formatting, automation, printf, echo
 I need to generate a file with very simple structure, just a LaTeX file with a few `include` statements.
 Until today, I was copying a template and manually changing it.
 This was slow, redundant, and error prone.
-I decided to just generate the files from the template instead.
+It makes more sense to just generate the files from the template instead.
 I wanted to use bash for this rather than a scripting language, because then it will connect better with the whole GNU Make workflow of the project.
 
 ## The solution
 
 I started by putting the template in the Makefile and using `echo`, as I normally do.
 This gave me some problems, so I started looking into alternatives that would let me keep the template as a separate file.
-Most people recommend `printf` as a more robust alternative.
-Then the problem was, how to pass `printf` the `FORMAT` argument from a file?
-That's what `xargs` does.
+Most people recommend `printf` as a more robust alternative to `echo`.
+The problem was, how to pass `printf` the `FORMAT` argument from a file?
+Use `xargs`.
 
 Here's a simple example.
 First you'll need a `format.txt` file, or whatever you choose to call it.
 
 ```
-$ printf "%%s and %%s\n" > format.txt                                                 
+$ printf "%%s and %%s\n" > format.txt
 ```
 
-The `%%` just escapes the special character `%` for `printf`:
+The `%%` just escapes the special character `%` for `printf`, so the contents of `template.txt` are `%s and %s`.
 
 ```
 $ cat format.txt
 %s and %s
 ```
 
-Then we can use it as follows:
+We can use it as follows:
 
 ```
 $ cat format.txt | xargs -0 -I{} printf {} A B
