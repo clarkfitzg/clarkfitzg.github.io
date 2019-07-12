@@ -8,7 +8,7 @@ categories: Hive, R, Hadoop, groupby, mapreduce, parallel, bigdata
 
 ### Summary
 
-Combining [Apache Hive](https://hive.apache.org/) with the 
+Combining [Apache Hive](https://Hive.apache.org/) with the 
 [R language](https://www.r-project.org/) reduced the run time of a practical
 data analysis script from a couple days to 12 minutes.
 
@@ -23,6 +23,27 @@ interface](https://www.r-bloggers.com/integrating-r-with-apache-hadoop/) or
 [RHIPE and deltarho](http://deltarho.org/). The approach with Hive
 described here complements these efforts, while staying mostly higher
 level.
+
+__EDIT 27 Nov 17__ Today I stumbled across the [`RHive`
+package](https://github.com/nexr/RHive) which was
+[archived on CRAN](https://cran.r-project.org/src/contrib/Archive/RHive/).
+I've briefly looked at the code, and the approach seems similar to what I
+describe here. It works more interactively, running queries from within an
+existing R session. The core of the processing uses a `for` loop in R to
+process each line for the reduce step. In my experience this approach is
+much slower than the vectorized approach described in this post, but I haven't
+verified this for `RHive`.
+
+Hive tables are also [accessible from R through
+JDBC](http://jarrettmeyer.com/2016/11/03/Hive-and-r-playing-nicely-together).
+One can use JDBC to load data from Hive directly into a local R session.
+This approach is excellent for interactive and exploratory data analysis
+with manageable data sets.  However, it won't work for processing a large
+amount of data in Hive through R, because it brings the data to the code.
+The network and the single local R session are a bottleneck.  For large
+data sets it's much better to bring the code to the data, which is the
+topic of this post.  We'll see how to run R _inside_ Hive, thus fully
+utilizing the power of the cluster.
 
 [Yesterday's post]({{ site.baseurl }}{% post_url
 2017-10-30-hive-udaf-with-R %}) showed some of the basics of using Hive
@@ -186,3 +207,8 @@ package is easier.
 Another advantage of this approach is that it requires minimal installation
 / configuration. If you have data in Hive and R installed on the cluster
 then you can use this technique today.
+
+Update: The data came from [Caltrans PeMS](http://pems.dot.ca.gov/) in the
+section Data Clearinghouse with Type "Station Raw". If you just want to
+look at some samples there are some at my [UC Davis
+site](http://anson.ucdavis.edu/~clarkf/).
