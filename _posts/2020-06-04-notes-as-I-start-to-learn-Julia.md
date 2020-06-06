@@ -12,7 +12,15 @@ These are my notes as I read the [official documentation](https://docs.julialang
 - Arithmetic overflows [wrap around](https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/#Overflow-behavior-1), like in C.
 - What is a `do` block?
     The example in setting numeric precision appears to be making a temporary change in how a computation happens.
-- numeric literals for multiplication is nice syntax: `2x` rather than `2*x`.
+- Numeric literals for multiplication is nice syntax: `2x` rather than `2*x`.
+
+
+## Limitations
+
+Here's what I immediately noticed was missing.
+
+- No [support for vi mode from the REPL](https://discourse.julialang.org/t/vim-mode-in-repl-command-line/9023), so quick experiments with expressions take longer and are more tedious than necessary.
+- Cannot [access the source code from the REPL](https://github.com/JuliaLang/julia/issues/2625#issuecomment-498840808), so when I'm experimenting with minor variations of a function I have to take the extra step of saving them in a text file.
 
 
 ## `zero` function
