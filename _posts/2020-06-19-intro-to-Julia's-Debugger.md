@@ -17,7 +17,8 @@ Debuggers validate your mental model of the program you've written, and your mod
 Duncan Temple Lang once remarked, "before you learn anything in a new programming language, you should learn the debugger."
 I'm learning Julia now, so let's learn the debugger.
 
-## Stepping through each statement
+
+## Stepping through a program
 
 We start by loading Debugger and defining a simple function, `f`.
 ```julia
@@ -29,7 +30,7 @@ f = function(x, y = 2)
 end
 ```
 
-We can enter the debugger by prefacing a call with the aptly named macro `@enter`.
+We can enter the debugger by prefacing a function call with the aptly named macro `@enter`.
 ```julia
 @enter f(1)
 ```
@@ -67,6 +68,7 @@ Type `?` followed by enter to see the possible commands.
 ```
 
 Let's start by looking at the variables in our current frame.
+These are the local variables inside the function.
 We expect to see `x, y, z` bound to `1, 2, 3`.
 ```julia
 1|debug> fr
@@ -78,6 +80,7 @@ We expect to see `x, y, z` bound to `1, 2, 3`.
 
 Indeed they are.
 To evaluate any Julia expression, we type `` ` `` (a backtick) and Debugger gives us a Julia prompt.
+We can call functions on the local variables _based on their current state in the function execution_.
 ```julia
 1|julia> 2*x
 2
@@ -127,4 +130,24 @@ We didn't add any breakpoints, and we're already at the `return` statement anywa
 
 julia>
 ```
+
+That's it for the basic introduction.
+The next example contains an actual bug.
+
+
+## Stopping on error
+
+It's often useful to stop and enter the debugger when an error occurs, so we can examine the state of the program under the exact conditions that produced the error.
+Hopefully, this investigation will lead us to the root cause.
+
+TODO: This would be more compelling if it was an actual bug that I ran into, vs. something contrived.
+But it also has to be simple enough to be self contained.
+I'm sure if I continue with these Project Euler problems I can get some nice examples.
+
+```julia
+squarelast = function(x)
+    x[end]^2
+end
+```
+
 
