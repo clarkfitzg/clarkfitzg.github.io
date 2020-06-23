@@ -12,13 +12,15 @@ This post demonstrates Julia's [Debugger](https://github.com/JuliaDebug/Debugger
 
 Learning how to use a debugger was an important milestone in my growth as a programmer.
 I thought I was doing fine without it, but I just didn't know what I was missing.
-A debugger allows you to stop a program in the middle of execution and interact deeply with the software that you've written.
+A debugger allows you to stop a program in the middle of execution and interact directly with the software that you've written.
 Debuggers validate your mental model of the program you've written, and your model of the language itself.
 Duncan Temple Lang once remarked, "before you learn anything in a new programming language, you should learn the debugger."
-I'm learning Julia now, so let's learn the debugger.
+
+What follows is a brief, self contained, introduction to Julia's debugger.
+You may also enjoy Norm Matloff's more [general resources on debugging](http://heather.cs.ucdavis.edu/~matloff/debug.html).
 
 
-## Stepping through a program
+## Stepping Through a Program
 
 We start by loading Debugger and defining a simple function, `f`.
 ```julia
@@ -135,19 +137,105 @@ That's it for the basic introduction.
 The next example contains an actual bug.
 
 
-## Stopping on error
+## Stopping on Error
 
 It's often useful to stop and enter the debugger when an error occurs, so we can examine the state of the program under the exact conditions that produced the error.
+We do this with Debugger by calling `break_on(:error)`, then `@run` in front of the expression that produces the error.
 Hopefully, this investigation will lead us to the root cause.
 
-TODO: This would be more compelling if it was an actual bug that I ran into, vs. something contrived.
-But it also has to be simple enough to be self contained.
-I'm sure if I continue with these Project Euler problems I can get some nice examples.
+The following code calculates and prints `2*3 + 4`, but it contains two bugs.
 
 ```julia
-squarelast = function(x)
-    x[end]^2
+axpy1 = function(a, x, y)
+    ax + y
+end
+
+f1 = function()
+    a = 2
+    x = 3
+    y = 4
+    println("If a = $a, x = $x, y = $y, then ax + y = $(axpy1(x, y, a))")
 end
 ```
 
+When we call `f1()`, we see the following error message:
+```julia
+julia> f1()
+ERROR: UndefVarError: ax not defined
+Stacktrace:
+ [1] (::var"#5#6")(::Int64, ::Int64, ::Int64) at ./REPL[45]:2
+ [2] (::var"#9#10")() at ./REPL[48]:5
+ [3] top-level scope at REPL[49]:1
+```
 
+We don't need debugging to fix this error.
+This error message tells us exactly what the problem is: we never defined the variable `ax`.
+Our program is simple, and the stack trace only contains three frames, so if we have the correct mental model of how the language works, then we can reason through it to fix the error.
+
+Debugging becomes truly useful when the problem is __not__ obvious.
+The error message may be uninformative, the program may be complex, and the stack trace may contain more frames than you can fit in your head.
+If you hit an error, and you don't know what's wrong, then run the same code through the debugger, as follows.
+```julia
+julia> break_on(:error)
+
+julia> @run f1()
+Breaking for error:
+ERROR: UndefVarError: ax not defined
+Stacktrace:
+ [1] (::var"#11#12")(::Int64, ::Int64, ::Int64) at REPL[52]:2
+ [2] (::var"#13#14")() at REPL[53]:5
+
+In #11(a, x, y) at REPL[52]:1
+ 1  axpy1 = function(a, x, y)
+>2      ax + y
+ 3  en
+
+About to run: (+)(Main.ax, 2)
+1|debug>
+```
+
+We are now in the debugger prompt, _inside the call to `axpy1()`,_ so we can enter any of the debugger commands.
+The error message said variable `ax` is not present.
+What variables are present?
+Let's see.
+```julia
+1|debug> fr
+[1] #11(a, x, y) at REPL[52]:1
+  | a::Int64 = 3
+  | x::Int64 = 4
+  | y::Int64 = 2
+```
+
+We have `a`, `x`, and `y`, but no `ax`.
+Ah, of course: we should have written `a*x` instead of `ax`.
+Let's fix this bug:
+```julia
+axpy2 = function(a, x, y)
+    a*x + y
+end
+
+f2 = function()
+    a = 2
+    x = 3
+    y = 4
+    println("If a = $a, x = $x, y = $y, then ax + y = $(axpy2(x, y, a))")
+end
+```
+
+<!--
+Julia allows [juxtaposed expressions like `10x`](https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/#man-numeric-literal-coefficients-1), but no sane programming language can know that `ax` should actually mean `a*x`, even if the mathematical notation was perfectly clear to the human reader.
+-->
+
+We call it as follows:
+```julia
+julia> f2()
+If a = 2, x = 3, y = 4, then ax + y = 14
+```
+
+That's not right.
+`2 * 3 + 4 = 10`, not `14`.
+Indeed, this is an altogether more troubling class of bug: one that executes perfectly fine, but produces the wrong answer. 😭
+Let's use another debugging technique, breakpoints, to see what went wrong.
+
+
+## Setting Breakpoints
