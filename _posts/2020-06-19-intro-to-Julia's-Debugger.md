@@ -6,7 +6,7 @@ comments: false
 categories: julia, debugging, software
 ---
 
-This post demonstrates Julia's [Debugger](https://github.com/JuliaDebug/Debugger.jl) through some simple examples.
+This post demonstrates [Julia's Debugger](https://github.com/JuliaDebug/Debugger.jl) through some simple examples.
 
 ## Introduction
 
@@ -15,9 +15,10 @@ I thought I was doing fine without it, but I just didn't know what I was missing
 A debugger allows you to stop a program in the middle of execution and interact directly with the software that you've written.
 Debuggers validate your mental model of the program you've written, and your model of the language itself.
 Duncan Temple Lang once remarked, "before you learn anything in a new programming language, you should learn the debugger."
+I'm taking his advice.
 
 What follows is a brief, self contained, introduction to Julia's debugger.
-You may also enjoy Norm Matloff's more [general resources on debugging](http://heather.cs.ucdavis.edu/~matloff/debug.html).
+You may also enjoy Norm Matloff's [general resources on debugging](http://heather.cs.ucdavis.edu/~matloff/debug.html).
 
 
 ## Stepping Through a Program
@@ -321,7 +322,7 @@ Let's probe the state of the evaluation.
 ```
 
 In this frame, we still have the same variables `a`, `x`, and `y`, but because of [Julia's lexical scoping rules](https://docs.julialang.org/en/v1/manual/variables-and-scoping/) _they're not the same as the `a`, `x`, and `y` in frame 1_.
-Press `` ` ``` (literal backtick) to enter the Julia REPL where can evaluate our `axpy3` function in the frame where it appeared to have a problem:
+Press `` ` `` (literal backtick) to enter the Julia REPL where can evaluate our `axpy3` function in the frame where it appeared to have a problem:
 ```julia
 2|julia>
 
