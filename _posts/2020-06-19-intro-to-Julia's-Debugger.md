@@ -234,8 +234,132 @@ If a = 2, x = 3, y = 4, then ax + y = 14
 
 That's not right.
 `2 * 3 + 4 = 10`, not `14`.
-Indeed, this is an altogether more troubling class of bug: one that executes perfectly fine, but produces the wrong answer. 😭
-Let's use another debugging technique, breakpoints, to see what went wrong.
+This is an altogether more troubling class of bug: one that executes perfectly fine, but produces the wrong answer. 😭
+`break_on(:error)` doesn't help us here, because there is no error to break on.
+Let's use another debugging technique, breakpoints, to find what went wrong.
 
 
 ## Setting Breakpoints
+
+Breakpoints tell the debugger to stop executing code, and instead drop you into an interactive debugger prompt so that you can look around.
+
+One simple way to add a breakpoint is to add the macro `@bp` to the line of the source code where you want to stop and examine the state.
+Let's add `@bp` inside of the `axpy` function, which makes this equivalent to debugging when the `axpy` function is called.
+In practice, you might add `@bp` deep in a loop in a conditional branch, so it only enters the debugger in the one case you're interested in.
+```julia
+axpy3 = function(a, x, y)
+    @bp
+    a*x + y
+end
+
+f3 = function()
+    a = 2
+    x = 3
+    y = 4
+    println("If a = $a, x = $x, y = $y, then ax + y = $(axpy3(x, y, a))")
+end
+```
+
+If we run this code normally, then it behaves as before.
+In particular, leaving `@bp` in the code does not cause Julia to enter the debugger.
+```julia
+julia> f3()
+If a = 2, x = 3, y = 4, then ax + y = 14
+```
+
+To stop at the break point and enter the debugger, we need to preface the code with `@run`.
+```julia
+julia> @run f3()
+Hit breakpoint:
+In #23(a, x, y) at REPL[62]:1
+ 1  axpy3 = function(a, x, y)
+●2      @bp
+>3      a*x + y
+ 4  en
+
+About to run: (*)(3, 4)
+1|debug>
+```
+
+We hit the breakpoint that we added inside the definition of `axpy3`, so we're now back in the debugger.
+`●2` indicates the breakpoint we hit on the second line, and `>3` indicates the next line to run.
+Let's look at the variables in our current frame, the call to `axpy3`.
+```julia
+1|debug> fr
+[1] #23(a, x, y) at REPL[62]:1
+  | a::Int64 = 3
+  | x::Int64 = 4
+  | y::Int64 = 2
+```
+
+Fine, `a`, `x`, and `y` are all defined and nothing looks too terribly wrong.
+Debugger allows us to step __up__ the [call stack](https://en.wikipedia.org/wiki/Call_stack), into the parent frame of the call to `axpy3()` where we encountered the breakpoint.
+The command is `up`.
+```julia
+1|debug> up
+In #25() at REPL[63]:1
+ 1  f3 = function()
+ 2      a = 2
+ 3      x = 3
+ 4      y = 4
+>5      println("If a = $a, x = $x, y = $y, then ax + y = $(axpy3(x, y, a))")
+ 6  en
+
+About to run: (var"#23#24"())(3, 4, 2)
+2|debug>
+```
+
+We are inside the call to `f3()`, which called `axpy3()`.
+In addition, the prompt changed to `2|debug>`, indicating that we are on frame 2.
+Let's probe the state of the evaluation.
+```julia
+2|debug> fr
+[2] #25() at REPL[63]:1
+  | a::Int64 = 2
+  | x::Int64 = 3
+  | y::Int64 = 4
+```
+
+In this frame, we still have the same variables `a`, `x`, and `y`, but because of [Julia's lexical scoping rules](https://docs.julialang.org/en/v1/manual/variables-and-scoping/) _they're not the same as the `a`, `x`, and `y` in frame 1_.
+Press `` ` ``` (literal backtick) to enter the Julia REPL where can evaluate our `axpy3` function in the frame where it appeared to have a problem:
+```julia
+2|julia>
+
+2|julia> axpy3(a, x, y)
+10
+```
+
+`2 * 3 + 4 = 10`, so our `axpy3` function works just fine.
+The bug lies in `f3`, where we call `axpy3(x, y, a)` with the arguments in the wrong order.
+Type `^C` followed by `q` to get back to the main Julia REPL.
+
+Maybe it wasn't the best idea to bury our call to `axpy3` inside this string interpolation.
+Let's fix the bug.
+```julia
+axpy4 = function(a, x, y)
+    a*x + y
+end
+
+f4 = function()
+    a = 2
+    x = 3
+    y = 4
+    z = axpy4(a, x, y)
+    println("If a = $a, x = $x, y = $y, then ax + y = $z")
+end
+```
+
+Does it work?
+```julia
+julia> f4()
+If a = 2, x = 3, y = 4, then ax + y = 10
+```
+
+Problem solved.
+
+
+## Conclusion
+
+Debugger has a rich set of breakpoint capabilities.
+You can add a breakpoint when a function is called, when a particular method is called, when a condition is satisfied, or to an arbitrary line in a file.
+You can toggle breakpoints on and off, and generally control a whole sequence of breakpoints.
