@@ -360,6 +360,12 @@ Problem solved.
 
 ## Conclusion
 
-Debugger has a rich set of breakpoint capabilities.
+This post highlighted only a couple of Debugger's rich set of capabilities.
 You can add a breakpoint when a function is called, when a particular method is called, when a condition is satisfied, or to an arbitrary line in a file.
-You can toggle breakpoints on and off, and generally control a whole sequence of breakpoints.
+You can toggle breakpoints on and off, and generally control entire sequence of breakpoints.
+We didn't even talk about watching expressions, editing code on the fly, or more sophisticated stepping.
+
+Debuggers are one of those peripheral skills that take a little time and effort to learn, so it's easy to put it off.
+Don't.
+Debuggers save time by allowing you to quickly pinpoint problems.
+They also strengthen your mental model, for any language, by allowing you to constantly test, explore, and verify what you believe to be true.
