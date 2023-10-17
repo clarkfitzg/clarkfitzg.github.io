@@ -12,35 +12,3 @@ It does not reflect the opinions of my employer.
 If you find the content on this site useful, feel free to link to it, or [send me an email](mailto:fitzgerald@csus.edu).
 Most content I post here is somewhat incomplete and unpolished, and I expect it to continue to evolve for many years.
 Use code at your own risk.
-
-<!--
-
-## Personal
-
-![biking with family]({% link img/bikefamily.jpg %})
-
-If only life were always as fun as pictures make it look.
-
-The following posts are more about my personal experience and opinions, and less about technical content.
-Most of my RTP ([research, tenure, and promotion](https://github.com/clarkfitzg/rtp)) documents are also online.
-The RTP repository contains lots of personal reflection as I learn how to teach.
-
-<ul>
-  {% for post in site.tags.personal %}
-    <li>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      {{ post.excerpt }}
-    </li>
-  {% endfor %}
-</ul>
-
-
-## Website
-
-I built this website using Jekyll, and you can find the [website source code here](https://github.com/clarkfitzg/csus_website).
-Feel free to use it as a template or a starting point if you want to build a website.
-
-I have no special talents or interest in formatting.
-If you're my student and it would be better if this website looked a different way, then just let me know.
-
--->
